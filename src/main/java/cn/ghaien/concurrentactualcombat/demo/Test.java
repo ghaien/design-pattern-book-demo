@@ -1,6 +1,5 @@
 package cn.ghaien.concurrentactualcombat.demo;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author guo.haien
  * @date 2018/12/20 14:50
  */
+
 public class Test {
 
     private String field;
@@ -20,23 +20,19 @@ public class Test {
         this.field = field;
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        ConcurrentHashMap<String, Object> map = new ConcurrentHashMap<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        for (int i = 0; i < 1000; i++) {
-            int j = i;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.add(Calendar.DAY_OF_YEAR, j);
-                    String str = sdf.format(calendar.getTime());
-                    map.put(str, "");
-                }
-            }).start();
-        }
-        Thread.sleep(10000);
-        System.out.println(map.size());
+    public static void main(String[] args) {
+        Map<String, String> hMap = new HashMap<>();
+        hMap.put(null, null);
+        Map<String, String> cMap = new ConcurrentHashMap<>();
+        cMap.put("key", "old value");
+        cMap.put("key", "new value");
+
+        int h1 = 0x31243248;
+        // 0011 0001 0010 0100 0011 0010 0100 1000
+        // 0000 0000 0000 0000 0011 0001 0010 0100
+        // 0011 0001 0010 0100 0000 0011 0110 1100
+        System.out.println(Integer.toString(h1 >>> 16, 16));
+        System.out.println(Integer.toString(h1 ^ (h1 >>> 16), 16));
     }
 
 }
